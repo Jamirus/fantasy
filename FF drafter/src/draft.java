@@ -162,11 +162,6 @@ public class draft
 
 		}
 		
-		for(int i = 0; i < 100; i++)
-		{
-			if(availablePlayers.get(i).position != 'Q')
-				System.out.println(i + " " + availablePlayers.get(i).name + " " + availablePlayers.get(i).proj + ", " + availablePlayers.get(i).position);
-		}
 		System.out.println("mean rb1 is " + meanRB1);
 		System.out.println("mean rb2 is " + meanRB2);
 		System.out.println("mean rb3 is " + meanRB3);
@@ -239,24 +234,35 @@ public class draft
 						{
 							if(draftBoard.get(i).name.equals(tmpName))
 							{
-								scan.next();
-								scan.next();
-								scan.next();
-								if(!scan.next().endsWith("\""))
-									scan.next();
-								scan.next();
-								scan.next();
-								scan.next();
-								scan.next();
-								scan.next();
-								scan.next();
-								String tmp = scan.next();
+								String tmp;
+								scan.next();//team
+								tmp = scan.next();
+								draftBoard.get(i).passAtt = Double.parseDouble(tmp.substring(1, tmp.indexOf("\"", 1)));
+								tmp = scan.next();
+								draftBoard.get(i).passComp = Double.parseDouble(tmp.substring(1, tmp.indexOf("\"", 1)));
+								tmp = scan.next();
+								if(!tmp.endsWith("\""))
+									tmp += scan.next();
+								tmp = tmp.replaceAll(",", "");
+								draftBoard.get(i).passYds = Double.parseDouble(tmp.substring(1, tmp.indexOf("\"", 1)));
+								tmp = scan.next();
+								draftBoard.get(i).passTds = Double.parseDouble(tmp.substring(1, tmp.indexOf("\"", 1)));
+								tmp = scan.next();
+								draftBoard.get(i).INTs = Double.parseDouble(tmp.substring(1, tmp.indexOf("\"", 1)));
+								tmp = scan.next();
+								draftBoard.get(i).rushAtt = Double.parseDouble(tmp.substring(1, tmp.indexOf("\"", 1)));
+								tmp = scan.next();
+								draftBoard.get(i).rushYds = Double.parseDouble(tmp.substring(1, tmp.indexOf("\"", 1)));
+								tmp = scan.next();
+								draftBoard.get(i).rushTds = Double.parseDouble(tmp.substring(1, tmp.indexOf("\"", 1)));
+								scan.next();//fumbles not tracked
+								tmp = scan.next();
 								draftBoard.get(i).proj = Double.parseDouble(tmp.substring(1, tmp.indexOf("\"", 1)));
 								break;
 							}
 							if(i == (draftBoard.size()-1))
 							{
-								System.out.println("No match for " + tmpName);
+								//System.out.println("No match for " + tmpName);
 								if(scan.hasNextLine())
 									scan.nextLine();
 								break;
@@ -280,23 +286,28 @@ public class draft
 						{
 							if(draftBoard.get(i).name.equals(tmpName))
 							{
+								String tmp;
 								scan.next();
 								scan.next();
 								scan.next();
 								scan.next();
+								tmp = scan.next();
+								draftBoard.get(i).receptions = Double.parseDouble(tmp.substring(1, tmp.indexOf("\"", 1)));
+								tmp = scan.next();
+								if(!tmp.endsWith("\""))
+									tmp += scan.next();
+								tmp = tmp.replaceAll(",", "");
+								draftBoard.get(i).recYds = Double.parseDouble(tmp.substring(1, tmp.indexOf("\"", 1)));	
+								tmp = scan.next();
+								draftBoard.get(i).recTds = Double.parseDouble(tmp.substring(1, tmp.indexOf("\"", 1)));
 								scan.next();
-								if(!scan.next().endsWith("\""))
-									scan.next();
-								scan.next();
-								scan.next();
-								String tmp = scan.next();
+								tmp = scan.next();
 								draftBoard.get(i).proj = Double.parseDouble(tmp.substring(1, tmp.indexOf("\"", 1)));
-								//System.out.println(draftBoard.get(i).proj);
 								break;
 							}
 							if(i == (draftBoard.size()-1))
 							{
-								System.out.println("No match for " + tmpName);
+								//System.out.println("No match for " + tmpName);
 								if(scan.hasNextLine())
 									scan.nextLine();
 								break;
@@ -320,23 +331,31 @@ public class draft
 						{
 							if(draftBoard.get(i).name.equals(tmpName))
 							{
-								scan.next();
-								scan.next();
-								if(!scan.next().endsWith("\""))
-									scan.next();
-								scan.next();
-								scan.next();
-								scan.next();
-								scan.next();
-								scan.next();
-								String tmp = scan.next();
+								String tmp;
+								scan.next();//team
+								tmp = scan.next();
+								draftBoard.get(i).rushAtt = Double.parseDouble(tmp.substring(1, tmp.indexOf("\"", 1)));
+								tmp = scan.next();
+								if(!tmp.endsWith("\""))
+									tmp += scan.next();
+								tmp = tmp.replaceAll(",", "");
+								draftBoard.get(i).rushYds = Double.parseDouble(tmp.substring(1, tmp.indexOf("\"", 1)));
+								tmp = scan.next();
+								draftBoard.get(i).rushTds = Double.parseDouble(tmp.substring(1, tmp.indexOf("\"", 1)));
+								tmp = scan.next();
+								draftBoard.get(i).receptions = Double.parseDouble(tmp.substring(1, tmp.indexOf("\"", 1)));
+								tmp = scan.next();
+								draftBoard.get(i).recYds = Double.parseDouble(tmp.substring(1, tmp.indexOf("\"", 1)));
+								tmp = scan.next();
+								draftBoard.get(i).recTds = Double.parseDouble(tmp.substring(1, tmp.indexOf("\"", 1)));
+								scan.next();//fumbles
+								tmp = scan.next();
 								draftBoard.get(i).proj = Double.parseDouble(tmp.substring(1, tmp.indexOf("\"", 1)));
-								//System.out.println(draftBoard.get(i).proj);
 								break;
 							}
 							if(i == (draftBoard.size()-1))
 							{
-								System.out.println("No match for " + tmpName);
+								//System.out.println("No match for " + tmpName);
 								if(scan.hasNextLine())
 									scan.nextLine();
 								break;
@@ -359,17 +378,20 @@ public class draft
 						{
 							if(draftBoard.get(i).name.equals(tmpName))
 							{
-								scan.next();
-								scan.next();
-								if(!scan.next().endsWith("\""))
-									scan.next();
-								scan.next();
-								scan.next();
-								String tmp = scan.next();
-								//System.out.println();
-								//System.out.println(tmp + "!!!!!!!!!!!!!!!!");
+								String tmp;
+								scan.next();//team
+								tmp = scan.next();
+								draftBoard.get(i).receptions = Double.parseDouble(tmp.substring(1, tmp.indexOf("\"", 1)));
+								tmp  = scan.next();
+								if(!tmp.endsWith("\""))
+									tmp += scan.next();
+								tmp = tmp.replaceAll(",", "");
+								draftBoard.get(i).recYds = Double.parseDouble(tmp.substring(1, tmp.indexOf("\"", 1)));
+								tmp = scan.next();
+								draftBoard.get(i).recTds = Double.parseDouble(tmp.substring(1, tmp.indexOf("\"", 1)));
+								scan.next();//fumbles
+								tmp = scan.next();
 								draftBoard.get(i).proj = Double.parseDouble(tmp.substring(1, tmp.indexOf("\"", 1)));
-								//System.out.println(draftBoard.get(i).name + " " + draftBoard.get(i).proj);
 								break;
 							}
 							if(i == (draftBoard.size()-1))
@@ -585,6 +607,7 @@ public class draft
 				System.out.println("Team " + board[pickingTeam][0] + " selects " + tmpPickName);
 				draftRecord[(i * teams.length) + i + j + 1] = teams[pickingTeam].name + " - " + tmpPickName + ", " + pickPos;
 				frame.draftRecordView.append(draftRecord[(i * teams.length) + i + j + 1] + "\n");
+				frame.scroll.getVerticalScrollBar().setValue(frame.scroll.getVerticalScrollBar().getMaximum());
 				//sleep to prevent AI draft picks from being made too fast, to make the program look cooler. SO COOL
 				Thread.sleep(50);
 			}

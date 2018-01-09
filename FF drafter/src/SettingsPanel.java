@@ -239,7 +239,7 @@ public class SettingsPanel extends JPanel{
 				
 				//init draft frame and tell it to start the draft(frame.init)
 				DraftFrame frame = new DraftFrame("FF Drafter");
-				frame.setSize(1400,800);
+				frame.setSize(1400,900);
 				frame.setVisible(true);
 				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 				frame.init(parent);

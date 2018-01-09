@@ -9,6 +9,20 @@ public class Player implements Comparable<Player>{
 	int tier = 3;					//player projection tier
 	double cost = 999999;			//cost variable for draft kings lineup ai
 	String team = "FA";
+	//passing specific stats
+	double passAtt = 0;
+	double passComp = 0;
+	double passYds = 0;
+	double passTds = 0;
+	double INTs = 0;
+	//rushing specific stats
+	double rushAtt = 0;
+	double rushYds = 0;
+	double rushTds = 0;
+	//recieving specific stats
+	double receptions;
+	double recYds;
+	double recTds;
 	
 	public Player(){
 		

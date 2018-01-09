@@ -23,6 +23,7 @@ public class DraftFrame extends JFrame{
 	PickPanel picker;
 	JTabbedPane overview;
 	JTextArea draftRecordView;
+	JScrollPane scroll;
 	
 	public DraftFrame(String name)
 	{
@@ -34,7 +35,7 @@ public class DraftFrame extends JFrame{
 		//init and add UI elements for desired layout
 		draftRecordView = new JTextArea();
 		draftRecordView.setEditable(false);
-		JScrollPane scroll = new JScrollPane(draftRecordView);
+		scroll = new JScrollPane(draftRecordView);
 		scroll.setPreferredSize(new Dimension(250, 450));
 		//add selector panel
 		select = new SelectorPanel();
@@ -42,6 +43,8 @@ public class DraftFrame extends JFrame{
 		pack();
 		
 		grid = new DraftGrid(draft.teams, draft.rounds);
+		grid.setPreferredSize(new Dimension(1300,(25*draft.rounds)));
+		grid.setMaximumSize(new Dimension(1400,(25*draft.rounds)));
 		picker = new PickPanel(draft.teams);
 		picker.add(scroll);
 		
@@ -50,7 +53,8 @@ public class DraftFrame extends JFrame{
 		display.add(grid);
 		display.add(picker);
 		
-		c.add(display, BorderLayout.CENTER);
+		JScrollPane displayScroll = new JScrollPane(display);
+		c.add(displayScroll, BorderLayout.CENTER);
 		
 	   
 	}

@@ -12,6 +12,7 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.RowFilter;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -26,12 +27,13 @@ public class PickPanel extends JPanel{
 	teamPanel teamDisplay;
 	JComboBox<Team> pickTeam;
 	JTable displayTable;
+	JTextArea playerData;
 	
 	//Table variables
 	Object[][] displayData;
 	PlayerTable model;
 	TableRowSorter<PlayerTable> sorter;
-	String[] colNames = {"Pos","Name","Team","Projection","Drafted"};
+	String[] colNames = {"Pos","Name","Team","Projection","Drafted", "Player"};
 	
 	public PickPanel(Team[] teams)
 	{	
@@ -44,7 +46,7 @@ public class PickPanel extends JPanel{
 			displayData[i][1] = draft.availablePlayers.get(i).name;
 			displayData[i][2] = draft.availablePlayers.get(i).team;
 			displayData[i][3] = new Double(draft.availablePlayers.get(i).proj);
-			displayData[i][4] = "zz";
+			displayData[i][4] = i;
 		}
 		
 		//set model and sorter(player class is comparable by name)
@@ -59,7 +61,18 @@ public class PickPanel extends JPanel{
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
 				if(displayTable.getSelectedRow() > -1)
+				{
 					SelectorPanel.selectedPlayer.setText((String) displayTable.getValueAt(displayTable.getSelectedRow(), 1));
+					String tmp = (String) displayTable.getValueAt(displayTable.getSelectedRow(), 1);
+					for(int i = 0; i < draft.availablePlayers.size();i++)
+					{
+						if(draft.availablePlayers.get(i).name.equals(tmp))
+						{
+							updatePlayerData(draft.availablePlayers.get(i));
+							break;
+						}
+					}
+				}
 			}
 			
 		});
@@ -118,13 +131,69 @@ public class PickPanel extends JPanel{
 		teamBox.add(teamDisplay);
 		
 		add(teamBox);
-		add(tableScroll);
+		
+		
+		
+		JPanel tableAndButtons = new JPanel();
+		tableAndButtons.setLayout(new BoxLayout(tableAndButtons, BoxLayout.PAGE_AXIS));	
+		tableAndButtons.add(tableScroll);
+		
+		JPanel filterButtons = new JPanel();
+		filterButtons.setLayout(new BoxLayout(filterButtons, BoxLayout.LINE_AXIS));
 		for(int i = 0; i < showPos.length; i++)
 		{
-			add(showPos[i]);
+			filterButtons.add(showPos[i]);
 		}
 		
+		tableAndButtons.add(filterButtons);
 		
+		add(tableAndButtons);
+		
+		playerData = new JTextArea("Select a Player", 20, 20);
+		playerData.setEditable(false);
+		
+		add(playerData);
+	}
+	//method to update playerdata with player....data
+	public void updatePlayerData(Player p)
+	{
+		playerData.setText(p.name + ", " + p.position + "\n");
+		switch(p.position)
+		{
+		case 'Q':
+			playerData.append("Pass attempts: " + p.passAtt + "\n");
+			playerData.append("Pass Completion" + p.passComp + "\n");
+			playerData.append("Pass yds: " + p.passYds+ "\n");
+			playerData.append("Pass tds: " + p.passTds + "\n");
+			playerData.append("INTS: " + p.INTs + "\n");
+			playerData.append("Rush attempts: " + p.rushAtt + "\n");
+			playerData.append("Rush yds: " + p.rushYds + "\n");
+			playerData.append("Rush tds: "+ p.rushTds + "\n");
+			playerData.append("Projected fpts: " + p.proj);
+			break;
+		case 'R':
+			playerData.append("Rush attempts: " + p.rushAtt + "\n");
+			playerData.append("Rush yds: " + p.rushYds + "\n");
+			playerData.append("Rush tds: "+ p.rushTds + "\n");
+			playerData.append("Projected fpts: " + p.proj);
+			break;
+		case 'W':
+			playerData.append("Receptions: " + p.receptions + "\n");
+			playerData.append("Recieving yds: " + p.recYds + "\n");
+			playerData.append("Recieving tds: " + p.recTds + "\n");
+			playerData.append("Projected fpts: " + p.proj);
+			break;
+		case 'T':
+			playerData.append("Receptions: " + p.receptions + "\n");
+			playerData.append("Recieving yds: " + p.recYds + "\n");
+			playerData.append("Recieving tds: " + p.recTds + "\n");
+			playerData.append("Projected fpts: " + p.proj);
+			break;
+		default:
+			playerData.append("no projections available");
+			break;
+			
+		}
 	}
 	
 	//method to flag player to be filtered and hide him
@@ -139,7 +208,7 @@ public class PickPanel extends JPanel{
 	{
 		List<RowFilter<PlayerTable,Object>> filters = new ArrayList<RowFilter<PlayerTable,Object>>();
 		
-		filters.add(RowFilter.regexFilter("zz",4));
+		filters.add(RowFilter.regexFilter("\\d",4));
 		
 		for(int i = 0; i < showPos.length; i++)
 		{
